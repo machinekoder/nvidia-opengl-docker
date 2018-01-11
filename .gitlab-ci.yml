@@ -38,7 +38,9 @@ stages:
                    "${VERSION}/devel"
     - if [[ "${NO_OS_SUFFIX}" == true ]]; then
           docker tag "${REPOSITORY}:${VERSION}-runtime-${OS}" "${REPOSITORY}:${VERSION}-runtime";
+          docker tag "${REPOSITORY}:${VERSION}-runtime-${OS}" "${REPOSITORY}:runtime";
           docker tag "${REPOSITORY}:${VERSION}-devel-${OS}" "${REPOSITORY}:${VERSION}-devel";
+          docker tag "${REPOSITORY}:${VERSION}-devel-${OS}" "${REPOSITORY}:devel";
       fi
     - docker push "${REPOSITORY}"
 
