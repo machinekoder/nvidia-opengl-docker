@@ -30,8 +30,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=khronos /usr/local/include /usr/local/include
 
-COPY gl.pc.x86_64 /usr/local/lib/x86_64-linux-gnu/pkgconfig/gl.pc
-COPY egl.pc.x86_64 /usr/local/lib/x86_64-linux-gnu/pkgconfig/egl.pc
-
-COPY gl.pc.i386 /usr/local/lib/i386-linux-gnu/pkgconfig/gl.pc
-COPY egl.pc.i386 /usr/local/lib/i386-linux-gnu/pkgconfig/egl.pc
+COPY usr /usr
