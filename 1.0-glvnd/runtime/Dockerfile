@@ -1,4 +1,4 @@
-ARG repository
+ARG from
 
 # Build libglvnd
 FROM ubuntu:16.04 as glvnd
@@ -39,7 +39,7 @@ RUN make distclean && \
     find /usr/local/lib/i386-linux-gnu -type f -name 'lib*.la' -delete
 
 
-FROM ${repository}:base-ubuntu16.04
+FROM ${from}
 LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
 
 COPY --from=glvnd /usr/local/lib/x86_64-linux-gnu /usr/local/lib/x86_64-linux-gnu

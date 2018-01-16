@@ -1,4 +1,4 @@
-ARG repository
+ARG from
 
 # Download the official headers from github.com/KhronosGroup
 FROM ubuntu:16.04 as khronos
@@ -17,7 +17,7 @@ RUN git clone https://github.com/KhronosGroup/EGL-Registry.git && cd EGL-Registr
     cp -r api/EGL api/KHR /usr/local/include
 
 
-FROM ${repository}:1.0-glvnd-runtime-ubuntu16.04
+FROM ${from}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         pkg-config \
