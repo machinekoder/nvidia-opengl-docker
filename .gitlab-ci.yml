@@ -54,5 +54,4 @@ base:
 v1.0-glvnd:
     variables:
         NO_OS_SUFFIX: "true"
-        LATEST: "true"
     <<: *glvnd_definition
