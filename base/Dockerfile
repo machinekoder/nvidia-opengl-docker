@@ -19,8 +19,4 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
         ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # Required for non-glvnd setups.
-RUN echo '/usr/$LIB/libGL.so.1' > /etc/ld.so.preload && \
-    echo '/usr/$LIB/libEGL.so.1' >> /etc/ld.so.preload
-
-# ld.so will print errors when this statement is executed, this is normal.
-ONBUILD RUN rm /etc/ld.so.preload
+ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:/usr/lib/i386-linux-gnu${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
