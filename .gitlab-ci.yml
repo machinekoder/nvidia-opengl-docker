@@ -1,7 +1,7 @@
-image: docker
+image: docker:stable
 
 services:
-    - docker:dind
+    - docker:stable-dind
 
 variables:
     REPOSITORY: "${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
