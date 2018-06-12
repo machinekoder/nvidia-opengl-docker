@@ -18,10 +18,10 @@ stages:
 .base_template: &base_definition
     stage: base
     script:
+    - docker pull "${REPOSITORY}:base-${OS}${OS_VERSION}" || true
     - docker build --pull -t "${REPOSITORY}:base-${OS}${OS_VERSION}"
+                   --cache-from "${REPOSITORY}:base-${OS}${OS_VERSION}"
                    --build-arg "from=${OS}:${OS_VERSION}"
-                   --label "com.nvidia.build.ref=${CI_COMMIT_SHA}"
-                   --label "com.nvidia.build.id=${CI_JOB_ID}"
                    "base/"
     - if [[ "${NO_OS_SUFFIX}" == true ]]; then
           docker tag "${REPOSITORY}:base-${OS}${OS_VERSION}" "${REPOSITORY}:base";
@@ -32,10 +32,14 @@ stages:
     stage: glvnd
     script:
     - VERSION="${CI_JOB_NAME:1}"
+    - docker pull "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}" || true
     - docker build --pull -t "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}"
+                   --cache-from "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}"
                    --build-arg "from=${REPOSITORY}:base-${OS}${OS_VERSION}"
                    "${VERSION}/runtime"
+    - docker pull "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}" || true
     - docker build -t "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}"
+                   --cache-from "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}"
                    --build-arg "from=${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}"
                    "${VERSION}/devel"
     - if [[ "${NO_OS_SUFFIX}" == true ]]; then
