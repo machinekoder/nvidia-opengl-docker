@@ -17,8 +17,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         x11proto-gl-dev && \
     rm -rf /var/lib/apt/lists/*
 
+ARG LIBGLVND_VERSION
+
 WORKDIR /opt/libglvnd
-RUN git clone --branch=v1.0.0 https://github.com/NVIDIA/libglvnd.git . && \
+RUN git clone --branch="${LIBGLVND_VERSION}" https://github.com/NVIDIA/libglvnd.git . && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local --libdir=/usr/local/lib/x86_64-linux-gnu && \
     make -j"$(nproc)" install-strip && \

@@ -36,17 +36,20 @@ stages:
     - docker build --pull -t "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}"
                    --cache-from "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}"
                    --build-arg "from=${REPOSITORY}:base-${OS}${OS_VERSION}"
-                   "${VERSION}/runtime"
+                   --build-arg "LIBGLVND_VERSION=${LIBGLVND_VERSION}"
+                   "glvnd/runtime"
     - docker pull "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}" || true
     - docker build -t "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}"
                    --cache-from "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}"
                    --build-arg "from=${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}"
-                   "${VERSION}/devel"
+                   "glvnd/devel"
     - if [[ "${NO_OS_SUFFIX}" == true ]]; then
           docker tag "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}" "${REPOSITORY}:${VERSION}-runtime";
-          docker tag "${REPOSITORY}:${VERSION}-runtime-${OS}${OS_VERSION}" "${REPOSITORY}:runtime";
           docker tag "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}" "${REPOSITORY}:${VERSION}-devel";
-          docker tag "${REPOSITORY}:${VERSION}-devel-${OS}${OS_VERSION}" "${REPOSITORY}:devel";
+      fi
+    - if [[ "${LATEST}" == true ]]; then
+          docker tag "${REPOSITORY}:${VERSION}-runtime" "${REPOSITORY}:runtime";
+          docker tag "${REPOSITORY}:${VERSION}-devel" "${REPOSITORY}:devel";
       fi
     - docker push "${REPOSITORY}"
 
@@ -57,5 +60,13 @@ base:
 
 v1.0-glvnd:
     variables:
+        LIBGLVND_VERSION: "v1.0.0"
         NO_OS_SUFFIX: "true"
+    <<: *glvnd_definition
+
+v1.1-glvnd:
+    variables:
+        LIBGLVND_VERSION: "v1.1.0"
+        NO_OS_SUFFIX: "true"
+        LATEST: "true"
     <<: *glvnd_definition
