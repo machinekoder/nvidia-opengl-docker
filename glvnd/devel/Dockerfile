@@ -1,7 +1,7 @@
 ARG from
 
 # Download the official headers from github.com/KhronosGroup
-FROM ubuntu:16.04 as khronos
+FROM debian:stretch as khronos
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \

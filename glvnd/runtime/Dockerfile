@@ -1,7 +1,7 @@
 ARG from
 
 # Build libglvnd
-FROM ubuntu:16.04 as glvnd
+FROM debian:stretch as glvnd
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
